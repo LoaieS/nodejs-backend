@@ -2,6 +2,8 @@
 # Creators (48-5)
 - Loaie Shalloufi
 - Tareq Abu Yunis
+#
+# Before running the app, please import backend_db.sql into your mySQL environment!!
 
 # Running the app
 

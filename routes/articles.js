@@ -6,11 +6,14 @@ const dbSingleton = require('../dbSingleton');
 const router = express.Router();
 const db = dbSingleton.getConnection();
 
+const { isAuthenticated, canModifyArticle } = require('./middlewares');
+
 
 /* ------------------------------------- SEARCH ARTICLES ---------------------------------------------- */
 // GET /api/articles
 // Returns a list of all articles
-router.get('/', (req, res) => {
+// Requires you to be logged-in
+router.get('/', isAuthenticated, (req, res) => {
     const query = 'SELECT * FROM articles';
     // Query to get all articles
     db.query(query, (err, result) => {
@@ -25,7 +28,8 @@ router.get('/', (req, res) => {
 // GET /api/articles/search
 // Returns articles based on search criteria provided in req.query
 // If multiple search criteria is given, only the FIRST is considered.
-router.get('/search', (req, res) => {
+// Requires you to be logged-in
+router.get('/search', isAuthenticated, (req, res) => {
     // Find the FIRST relevant query to search articles
     let keyword = undefined, value = undefined;
     for (const [key, val] of Object.entries(req.query)) {
@@ -65,7 +69,8 @@ router.get('/search', (req, res) => {
 
 // GET /api/articles/:id
 // Returns an article by id
-router.get('/:id', (req, res) => {
+// Requires you to be logged-in
+router.get('/:id', isAuthenticated, (req, res) => {
     const { id } = req.params;
     const query = 'SELECT * FROM articles WHERE id = ?';
     // Query to get article
@@ -85,7 +90,8 @@ router.get('/:id', (req, res) => {
 /* ------------------------------------- Create / Edit / Delete ARTICLES ---------------------------------------------- */
 // POST /api/articles
 // Creates a new article inside the table
-router.post('/', (req, res) => {
+// Requires you to be logged-in
+router.post('/', isAuthenticated, (req, res) => {
     const { title, description, content, author, type, image_path } = req.body;
     if (!title || !description || !content || !author || !type || !image_path) 
         return res.status(500).json({"error": 'Invalid values, failed to insert new article.'});
@@ -101,7 +107,8 @@ router.post('/', (req, res) => {
 
 // PUT /api/articles/:id
 // Updates an article inside the table by id
-router.put('/:id', (req, res) => {
+// Requires you to be the article owner / an admin user
+router.put('/:id', isAuthenticated, canModifyArticle, (req, res) => {
     const { id } = req.params;
     const { title, description, content, author, type, image_path } = req.body;
 
@@ -135,7 +142,8 @@ router.put('/:id', (req, res) => {
 
 // DELETE /api/articles/:id
 // Deletes an article by id
-router.delete('/:id', (req, res) => {
+// Requires you to be the article owner / an admin user
+router.delete('/:id', isAuthenticated, canModifyArticle, (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM articles WHERE id = ?';
 
@@ -156,7 +164,7 @@ router.delete('/:id', (req, res) => {
 /* ------------------------------------- GET SORTED ARTICLES ---------------------------------------------- */
 // GET /api/articles/ordered/created_at
 // Returns a list of all articles ordered by created_at
-router.get('/ordered/created_at', (req, res) => {
+router.get('/ordered/created_at', isAuthenticated, (req, res) => {
     const query = 'SELECT * FROM articles ORDER BY created_at DESC;';
     // Query to get all articles ordered by created_at
     db.query(query, (err, result) => {
@@ -170,7 +178,7 @@ router.get('/ordered/created_at', (req, res) => {
 
 // GET /api/articles/ordered/updated_at
 // Returns a list of all articles ordered by updated_at
-router.get('/ordered/updated_at', (req, res) => {
+router.get('/ordered/updated_at', isAuthenticated, (req, res) => {
     const query = 'SELECT * FROM articles ORDER BY updated_at DESC;';
     // Query to get all articles ordered by updated_at
     db.query(query, (err, result) => {

@@ -2,17 +2,26 @@
 // Tareq Abu Yunis
 
 const express = require('express');
+const session = require('express-session');
 const app = express();
 const articleRoutes = require('./routes/articles');
+const userRoutes = require('./routes/users');
 
 const port = process.env.PORT || 3000;
 
-// Middleware for JSON processing (if required)
+// Middlewares
 app.use(express.json());
 app.use(express.static('public'));
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 // Routers
 app.use('/api/articles', articleRoutes); // All article routes
+app.use('/api/users', userRoutes); // All user routes
 
 // Main Page
 app.get('/', (req, res) => {
