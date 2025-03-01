@@ -12,8 +12,9 @@ const port = process.env.PORT || 3000;
 // Middlewares
 app.use(express.json());
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.use(session({
-    secret: 'your_secret_key',
+    secret: 'ArnoldWasHere',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }

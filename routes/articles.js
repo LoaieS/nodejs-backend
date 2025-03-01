@@ -6,7 +6,7 @@ const dbSingleton = require('../dbSingleton');
 const router = express.Router();
 const db = dbSingleton.getConnection();
 
-const { isAuthenticated, canModifyArticle } = require('./middlewares');
+const { isAuthenticated, canModifyArticle, upload } = require('./middlewares');
 
 
 /* ------------------------------------- SEARCH ARTICLES ---------------------------------------------- */
@@ -91,13 +91,17 @@ router.get('/:id', isAuthenticated, (req, res) => {
 // POST /api/articles
 // Creates a new article inside the table
 // Requires you to be logged-in
-router.post('/', isAuthenticated, (req, res) => {
-    const { title, description, content, author, type, image_path } = req.body;
-    if (!title || !description || !content || !author || !type || !image_path) 
+router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
+    const { title, description, content, author, type } = req.body;
+    if (!title || !description || !content || !author || !type) 
         return res.status(500).json({"error": 'Invalid values, failed to insert new article.'});
+    
+    // If we have an image attached, get the imagePath to save in the database, 
+    // otherwise send null (acceptable in our SQL table)
+    const imagePath = req.file ? `/backend/data/article_images/${req.file.filename}` : null;
 
     const query = 'INSERT INTO articles (title, description, content, author, type, image_path) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(query, [title, description, content, author, type, image_path], (err, result) => {
+    db.query(query, [title, description, content, author, type, imagePath], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Failed to insert new article!' });
         }
@@ -108,34 +112,48 @@ router.post('/', isAuthenticated, (req, res) => {
 // PUT /api/articles/:id
 // Updates an article inside the table by id
 // Requires you to be the article owner / an admin user
-router.put('/:id', isAuthenticated, canModifyArticle, (req, res) => {
+router.put('/:id', isAuthenticated, canModifyArticle, upload.single('image'), (req, res) => {
     const { id } = req.params;
-    const { title, description, content, author, type, image_path } = req.body;
+    const { title, description, content, author, type, removeImage } = req.body;
 
-    // Validate that all required fields are provided
-    if (!title || !description || !content || !author || !type || !image_path) {
+    // Validate required fields (image is optional, removeImage is optional)
+    if (!title || !description || !content || !author || !type) {
         return res.status(500).json({ error: 'Missing required fields for update.' });
     }
 
-    // Update query that also sets updated_at to the current time
-    const query = `
-        UPDATE articles
-        SET title = ?, description = ?, content = ?, author = ?, type = ?, image_path = ?, updated_at = NOW()
-        WHERE id = ?
-    `;
+    // Begin constructing the SQL update components and the corresponding values
+    let fields = ["title = ?", "description = ?", "content = ?", "author = ?", "type = ?"];
+    let values = [title, description, content, author, type];
+
+    // Case 1: A new image was uploaded
+    if (req.file) {
+        fields.push("image_path = ?");
+        values.push(`/backend/data/article_images/${req.file.filename}`);
+    }
+    
+    // Case 2: No new image, but the removeImage flag indicates the image should be removed
+    else if (removeImage && removeImage.toString().toLowerCase() === "true") {
+        fields.push("image_path = ?");
+        values.push(null);
+    }
+    
+    // Otherwise, do not modify the existing image_path (by not adding it to our SQL query)
+
+    // Always update the updated_at timestamp
+    fields.push("updated_at = NOW()");
+
+    // Build the final SQL query dynamically
+    const query = `UPDATE articles SET ${fields.join(", ")} WHERE id = ?`;
+    values.push(id);
 
     // Execute the update query
-    db.query(query, [title, description, content, author, type, image_path, id], (err, result) => {
+    db.query(query, values, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Failed to update article.' });
         }
-
-        // If no rows were affected, then the article wasn't found
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: `Article with id = ${id} not found.` });
         }
-
-        // Return success message along with query result info
         return res.json({ message: `Successfully updated article with id = ${id}.`, article: result });
     });
 });

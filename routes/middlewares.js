@@ -2,9 +2,12 @@
 // Tareq Abu Yunis
 
 const dbSingleton = require('../dbSingleton');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const db = dbSingleton.getConnection();
 
-/* -------------------- MIDDLEWARES -------------------- */
+/* -------------------- USERS MIDDLEWARES -------------------- */
 // Middleware to check if a user is authenticated
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
@@ -36,7 +39,37 @@ function canModifyArticle(req, res, next) {
     });
 }
 
+/* -------------------- FILE UPLOADS MIDDLEWARES -------------------- */
+// Ensure the upload directory exists
+const uploadDir = path.join(__dirname, '..', 'data', 'article_images');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// File storage configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir); // Folder to save files
+    },
+    filename: function (req, file, cb) { // Unique file name (based on UNIX timestamp + file extension)
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+// File filter to allow only images
+const imageFilter = function(req, file, cb) {
+    // Use a regex to check for valid image extensions
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      return cb(new Error('Only image files (jpg, jpeg, png, gif) are allowed!'), false);
+    }
+    cb(null, true);
+};
+
+// Initialize the Multer upload middleware with our storage configuration & image filters
+const upload = multer({ storage: storage, fileFilter: imageFilter });
+
 module.exports = { 
     isAuthenticated, 
-    canModifyArticle 
+    canModifyArticle,
+    upload
 };

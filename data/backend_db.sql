@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2025 at 09:15 PM
+-- Generation Time: Mar 01, 2025 at 03:52 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,9 +46,9 @@ CREATE TABLE `articles` (
 --
 
 INSERT INTO `articles` (`id`, `title`, `description`, `content`, `author`, `type`, `image_path`, `created_at`, `updated_at`) VALUES
-(1, 'Roguelike Chess Tactics', 'An overview of the top tactics to use in Sharanj.', 'In-depth explanation of how to combine chess strategies with roguelike elements to outmaneuver your foes in Sharanj. Detailed examples follow. This article also covers tactical movements and common pitfalls to avoid during gameplay, offering valuable insights for both new and experienced players.', 'Tareq', 'Strategy', 'https://chessmood.sfo3.cdn.digitaloceanspaces.com/chessmood/images/articles/826/1690107709_64bcff3d98c9a.webp', '2025-02-28 18:17:47', '2025-02-28 18:17:47'),
-(2, 'Advanced Builds and Decks', 'How to customize your hero and deck for advanced play.', 'For experienced players seeking an extra challenge, we explore advanced hero builds and deck synergies to conquer the toughest dungeons. Detailed analysis and expert advice are provided, ensuring you can optimize your strategy and create powerful combinations for advanced play.', 'Arnold', 'Discussion', 'https://minireview.io/common/uploads/cache/review/1-900-506-219ba0cf99911662027337044c60dcdf.webp', '2025-02-28 16:17:47', '2025-02-28 19:50:40'),
-(3, 'Advanced Builds and Decks', 'How to customize your hero and deck for advanced play.', 'For experienced players seeking an extra challenge, we explore advanced hero builds and deck synergies to conquer the toughest dungeons. Detailed analysis and expert advice are provided, ensuring you can optimize your strategy and create powerful combinations for advanced play.', 'Loaie', 'Discussion', 'https://minireview.io/common/uploads/cache/review/1-900-506-219ba0cf99911662027337044c60dcdf.webp', '2025-02-28 18:17:47', '2025-02-28 19:45:02');
+(1, 'Roguelike Chess Tactics', 'An overview of the top tactics to use in Sharanj.', 'In-depth explanation of how to combine chess strategies with roguelike elements to outmaneuver your foes in Sharanj. Detailed examples follow. This article also covers tactical movements and common pitfalls to avoid during gameplay, offering valuable insights for both new and experienced players.', 'Tareq', 'Strategy', '/backend/data/article_images/1729481724512.jpg', '2025-02-28 18:17:47', '2025-03-01 14:23:02'),
+(2, 'Beginner’s Guide to Sharanj', 'All you need to know to start playing Sharanj today.', 'From basic movement to special abilities, learn everything you need to begin your journey in the Sharanj universe. Here’s what you should know...', 'Arnold', 'Help', '/backend/data/article_images/17024824275.jpg', '2025-02-28 16:17:47', '2025-03-01 14:25:19'),
+(3, 'Advanced Builds and Decks', 'How to customize your hero and deck for advanced play.', 'For experienced players seeking an extra challenge, we explore advanced hero builds and deck synergies to conquer the toughest dungeons. Detailed analysis and expert advice are provided, ensuring you can optimize your strategy and create powerful combinations for advanced play.', 'Loaie', 'Discussion', '/backend/data/article_images/1740840667978.jpg', '2025-02-28 18:17:47', '2025-03-01 14:51:07');
 
 -- --------------------------------------------------------
 
@@ -100,7 +100,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
