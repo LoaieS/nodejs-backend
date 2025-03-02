@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2025 at 03:52 PM
+-- Generation Time: Mar 02, 2025 at 07:08 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,9 +46,31 @@ CREATE TABLE `articles` (
 --
 
 INSERT INTO `articles` (`id`, `title`, `description`, `content`, `author`, `type`, `image_path`, `created_at`, `updated_at`) VALUES
-(1, 'Roguelike Chess Tactics', 'An overview of the top tactics to use in Sharanj.', 'In-depth explanation of how to combine chess strategies with roguelike elements to outmaneuver your foes in Sharanj. Detailed examples follow. This article also covers tactical movements and common pitfalls to avoid during gameplay, offering valuable insights for both new and experienced players.', 'Tareq', 'Strategy', '/backend/data/article_images/1729481724512.jpg', '2025-02-28 18:17:47', '2025-03-01 14:23:02'),
-(2, 'Beginner’s Guide to Sharanj', 'All you need to know to start playing Sharanj today.', 'From basic movement to special abilities, learn everything you need to begin your journey in the Sharanj universe. Here’s what you should know...', 'Arnold', 'Help', '/backend/data/article_images/17024824275.jpg', '2025-02-28 16:17:47', '2025-03-01 14:25:19'),
-(3, 'Advanced Builds and Decks', 'How to customize your hero and deck for advanced play.', 'For experienced players seeking an extra challenge, we explore advanced hero builds and deck synergies to conquer the toughest dungeons. Detailed analysis and expert advice are provided, ensuring you can optimize your strategy and create powerful combinations for advanced play.', 'Loaie', 'Discussion', '/backend/data/article_images/1740840667978.jpg', '2025-02-28 18:17:47', '2025-03-01 14:51:07');
+(1, 'Roguelike Chess Tactic', 'An overview of the top tactics to use in Sharanj.', 'In-depth explanation of how to combine chess strategies with roguelike elements to outmaneuver your foes in Sharanj. Detailed examples follow. This article also covers tactical movements and common pitfalls to avoid during gameplay, offering valuable insights for both new and experienced players.', 'Loaie', 'Strategy', '/images/1729481724512.jpg', '2025-02-28 18:17:47', '2025-03-02 17:43:05'),
+(2, 'Beginner’s Guide to Sharanj', 'All you need to know to start playing Sharanj today.', 'From basic movement to special abilities, learn everything you need to begin your journey in the Sharanj universe. Here’s what you should know...', 'Arnold', 'Help', '/images/1740936930480.jpg', '2025-02-28 16:17:47', '2025-03-02 17:35:30'),
+(3, 'Advanced Builds and Deck', 'How to customize your hero and deck for advanced play.', 'For experienced players seeking an extra challenge, we explore advanced hero builds and deck synergies to conquer the toughest dungeons. Detailed analysis and expert advice are provided, ensuring you can optimize your strategy and create powerful combinations for advanced play.', 'Loaie', 'Discussion', '/images/1740936517642.jpg', '2025-02-28 18:17:47', '2025-03-02 17:50:55'),
+(20, 'Welcome to Sharanj: The Ultimate Chess Adventure', 'Introduces the game and invites players to share their first impressions.', 'Welcome to the official forum for Sharanj – a groundbreaking blend of roguelike challenges, deckbuilding mechanics, and chess strategy!\r\n\r\nIn Sharanj, every match is a unique adventure where the classic game of chess is infused with unpredictability and tactical depth. Whether you\'re a seasoned strategist or new to the genre, join the conversation and share your first impressions, questions, and tips.\r\n\r\nLet\'s build a community that thrives on creativity and strategy!', 'admin', 'Discussion', '/images/1740937117830.jpg', '2025-03-02 17:38:37', '2025-03-02 17:38:37'),
+(21, 'Mastering Deckbuilding in Sharanj', 'A deep dive into deckbuilding tactics to enhance your gameplay.', 'Deckbuilding is a core aspect of Sharanj. In this article, we’ll explore advanced tactics to help you build a powerful deck that complements your chess strategies.\r\n\r\nLearn which cards best suit aggressive plays versus defensive maneuvers, how to combine abilities for synergy, and tips on adjusting your deck on the fly when the game throws you unexpected challenges.\r\n\r\nShare your strategies and discuss what works best for you in the ever-evolving battles of Sharanj!', 'Tareq', 'Strategy', '/images/1740937185311.jpg', '2025-03-02 17:39:45', '2025-03-02 17:54:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `message`) VALUES
+(1, 'Loaie', 'loaie.sh@hotmail.co.il', 'Please help me be able to login to your website!! Stam...');
 
 -- --------------------------------------------------------
 
@@ -72,7 +94,9 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
 (1, 'Loaie', 'potato1@gmail.com', '$2b$10$op2ry9pu65NYVR.3uS6l8eEciZv1zEqrVMVTtAwwaeFwozlLpIQFC', 'user'),
 (6, 'Tareq', 'potato2@gmail.com', '$2b$10$uLUXFdzMK/46L0Vg9PTAdeBgzCpxGFg5oTxFw8R9fUrXbM7hO7aO6', 'user'),
 (7, 'Arnold', 'potato3@gmail.com', '$2b$10$AI/ZF/uV0l7MZ3avlVf3DOBBMaMtyZwtOVrDO9j4vJZQJF.jO33Zq', 'admin'),
-(8, 'admin', 'admin@gmail.com', '$2b$10$e9u65zPfmf.lqbBvHtqw/OJPWAO.H1f4Bh31zNJMQhN1x6lpufxzK', 'admin');
+(8, 'admin', 'admin@gmail.com', '$2b$10$e9u65zPfmf.lqbBvHtqw/OJPWAO.H1f4Bh31zNJMQhN1x6lpufxzK', 'admin'),
+(12, 'Arnoldinho', 'potato4@gmail.com', '$2b$10$vsZa4P9agOows8mgMBi0B.VXUN4WdmM0Riltt7qVXirT8zy8SJCLm', 'user'),
+(13, 'newUser', 'newUser@gmail.com', '$2b$10$mPnYKiqals4xocVUOio/jOfg8eOqJXCzfE4NGpeEAvf5Iu0rlhrAS', 'user');
 
 --
 -- Indexes for dumped tables
@@ -82,6 +106,12 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
 -- Indexes for table `articles`
 --
 ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -100,13 +130,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

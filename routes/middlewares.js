@@ -16,7 +16,7 @@ function isAuthenticated(req, res, next) {
         return res.status(401).json({ error: "Unauthorized: Please log in." });
     }
 }
-  
+
 // Middleware to check if the current user can modify the article
 function canModifyArticle(req, res, next) {
     const { username, role } = req.session.user;
@@ -41,7 +41,7 @@ function canModifyArticle(req, res, next) {
 
 /* -------------------- FILE UPLOADS MIDDLEWARES -------------------- */
 // Ensure the upload directory exists
-const uploadDir = path.join(__dirname, '..', 'data', 'article_images');
+const uploadDir = path.join(__dirname, '..', 'data', 'images');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }

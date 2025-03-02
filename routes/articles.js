@@ -98,14 +98,14 @@ router.post('/', isAuthenticated, upload.single('image'), async (req, res) => {
     
     // If we have an image attached, get the imagePath to save in the database, 
     // otherwise send null (acceptable in our SQL table)
-    const imagePath = req.file ? `/backend/data/article_images/${req.file.filename}` : null;
+    const imagePath = req.file ? `/images/${req.file.filename}` : null;
 
     const query = 'INSERT INTO articles (title, description, content, author, type, image_path) VALUES (?, ?, ?, ?, ?, ?)';
     db.query(query, [title, description, content, author, type, imagePath], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Failed to insert new article!' });
         }
-        return res.json({"message": "Successfully inserted a new article.", "article": result});
+        return res.json({"message": "Successfully inserted a new article." });
     })
 })
 
@@ -128,7 +128,7 @@ router.put('/:id', isAuthenticated, canModifyArticle, upload.single('image'), (r
     // Case 1: A new image was uploaded
     if (req.file) {
         fields.push("image_path = ?");
-        values.push(`/backend/data/article_images/${req.file.filename}`);
+        values.push(`/images/${req.file.filename}`);
     }
     
     // Case 2: No new image, but the removeImage flag indicates the image should be removed

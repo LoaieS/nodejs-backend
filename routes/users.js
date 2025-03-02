@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
             
             // Save user info in session
             req.session.user = { username, role: userRole };
-            return res.status(201).json({ message: 'User registered successfully.' });
+            return res.status(201).json({ message: 'User registered successfully.', user: req.session.user });
         });
     } catch (error) {
         return res.status(500).json({ error: 'Error occured during registration.' });
@@ -65,8 +65,8 @@ router.post('/login', (req, res) => {
                 return res.status(401).json({ error: 'Invalid username / password.' });
             }
             // Save username and role in session
-            req.session.user = { username: user.username, role: user.role };
-            return res.status(200).json({ message: 'Logged in successfully.' });
+            req.session.user = {"username": user.username, "role": user.role};
+            return res.status(200).json({ message: 'Logged in successfully.', user: req.session.user });
         } catch (error) {
             return res.status(500).json({ error: 'Error during login.' });
         }
@@ -84,6 +84,19 @@ router.post('/logout', (req, res) => {
         res.clearCookie('connect.sid');
         return res.status(200).json({ message: 'Logged out successfully.' });
     });
+});
+
+
+/* ------------------------------------- CURRENT ---------------------------------------------- */
+// GET /api/users/current
+// Gets the current user from the session
+router.get('/current', (req, res) => {
+    if (req.session && req.session.user) {
+        return res.json(req.session.user);
+    }
+    else {
+        return res.status(500).json({error: `No user is currently logged in.`});
+    }
 });
 
 module.exports = router;
